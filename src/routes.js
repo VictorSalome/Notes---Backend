@@ -6,6 +6,8 @@ const AnnotationController = require('./controllers/AnnotationController')
 
 
 //Rota Annotations
-routes.get('/annotations', AnnotationController.create)
+routes.post('/annotations', AnnotationController.create)
+routes.get('/annotations', AnnotationController.read)
+routes.delete('/annotations/:id', AnnotationController.delete)
 
 module.exports = routes

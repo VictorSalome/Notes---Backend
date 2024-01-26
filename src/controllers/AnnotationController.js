@@ -1,15 +1,41 @@
 const Annotations = require('../models/AnnotationData')
 
-
 module.exports = {
+    async read(request, response) {
+        const annotationList = await Annotations.find()
 
-    create(request, response) {
-    const { title, notes, priority } = request.body
+        return response.json(annotationList)
+    },
 
-    console.log(title)
-    console.log(notes)
-    console.log(priority)
+    async create(request, response) {
+        const { title, notes, priority } = request.body
 
-}
+        if (!notes || !title) {
+            return response.status(400).json({ error: "Necessário um título/anotação!" })
+        }
 
+        const annotationCreated = await Annotations.create({
+            title,
+            notes,
+            priority
+        })
+
+        return response.json(annotationCreated)
+    },
+
+
+    async delete(request, response) {
+        const { id } = request.params
+
+        const annotationDeleted = await Annotations.findOneAndDelete({ _id: id })
+
+        if (annotationDeleted) {
+            return response.json(annotationDeleted)
+        }
+
+        return response.status(401).json({ error: "não foi encontrado registro para deletar!" })
+
+
+
+    }
 }
